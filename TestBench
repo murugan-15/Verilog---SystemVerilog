@@ -1,0 +1,33 @@
+module tb;
+  logic[1:0]a;
+  logic sel,y;
+  
+  //Instantiate the module
+  mux2to1 dut ( a,sel,y);
+  
+  initial begin
+    //Initialize signals
+    a = 2'b00; sel = 0;
+    
+    //Apply test vectors
+    #5 {a[1],a[0],sel} = 3'b000; //Expected y = 0
+    #5 {a[1],a[0],sel} = 3'b010; //Expected y = 1
+    #5 {a[1],a[0],sel} = 3'b100; //Expected y = 0
+    #5 {a[1],a[0],sel} = 3'b110; //Expected y = 1
+    
+    #5 {a[1],a[0],sel} = 3'b001; //Expected y = 0
+    #5 {a[1],a[0],sel} = 3'b101; //Expected y = 1
+    #5 {a[1],a[0],sel} = 3'b011; //Expected y = 0
+    #5 {a[1],a[0],sel} = 3'b111; //Expected y = 1
+    
+    #5 $finish;
+  end
+  
+  
+  initial begin
+    $dumpfile("mux2to1.vcd");
+    $dumpvars(0,tb);
+    $monitor("time=%0d | a=%b | sel=%b | y=%b",$time,a,sel,y);
+  end
+endmodule
+   
